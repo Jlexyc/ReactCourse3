@@ -6,7 +6,7 @@ React Lessons
 UI is on you.
 
 - Create a web app, that will work with ToDo list (add/remove/edit items). Also each item could have its own status (Open, In Progress, Done). So we need to implement a mechanism that allows us to change status of the task.
-- Add an ability to filter tasks and show only by selected filter.
+- Add an ability to filter tasks by status.
 - Add an ability to sort items by Creation & Update dates.
 
 Each task must have:
