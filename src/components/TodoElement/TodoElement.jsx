@@ -1,14 +1,29 @@
 import React, { useMemo, useCallback } from 'react';
 import PropTypes from 'prop-types';
 
+import { Typography, Button, CardContent, CardActions, Card, Box } from '@mui/material';
+
 import { getColorFromPriority } from '../../utils/elementsUtils';
 
 import './TodoElement.css';
 
-export const TodoElement = ({ element, onEditElement = () => {}, onRemoveElement = () => {} }) => {
+const styles = {
+  boxStyles: {
+    width: '200px',
+    height: '240px',
+    margin: '10px',
+  },
+  typographyExtraStyle: {
+    mb: 1.5
+  },
+  cardContent: {
+    height: '150px',
+  }
+}
 
+export const TodoElement = ({ element, onEditElement = () => {}, onRemoveElement = () => {} }) => {
   const additionalCardStyle = useMemo(() => {
-    return { backgroundColor: getColorFromPriority(element.priority) }
+    return [styles.boxStyles, { bgcolor: getColorFromPriority(element.priority) }]
   }, [element.priority])
 
   const onRemoveClick = useCallback(() => {
@@ -20,23 +35,19 @@ export const TodoElement = ({ element, onEditElement = () => {}, onRemoveElement
   }, [element.id, onEditElement])
 
   return (
-    <div style={additionalCardStyle} className="element">
-      <div className="elementsContainer">
-        <div>
-          {element.description}
-        </div>
-        <div>
-          {element.when}
-        </div>
-        <div>
-          {element.done ? "DONE" : "PENDING"}
-        </div>
-      </div>
-      <div className="buttonContainer">
-        <button onClick={onRemoveClick}>Remove</button>
-        <button onClick={onEditClick}>Edit</button>
-      </div>
-    </div>
+    <Box>
+      <Card sx={additionalCardStyle}>
+        <CardContent sx={styles.cardContent}>
+          <Typography variant="h5" component="div">{element.description}</Typography>
+          <Typography sx={styles.typographyExtraStyle} color="text.secondary">{element.when}</Typography>
+          <Typography sx={styles.typographyExtraStyle} color="text.secondary">{element.done ? "DONE" : "PENDING"}</Typography>
+        </CardContent>
+        <CardActions>
+          <Button onClick={onRemoveClick} variant="contained">Remove</Button>
+          <Button onClick={onEditClick} variant="contained">Edit</Button>
+        </CardActions>
+      </Card>
+    </Box>
   )
 }
 

@@ -1,12 +1,40 @@
-import React, { useState, useCallback } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState, useCallback, useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { DialogTitle, DialogContentText, DialogContent, DialogActions, Dialog, TextField, Button } from '@mui/material';
+
+import { hideFormModal } from '../../rdx/app/actions';
+import { addTodoItem, editTodoItem } from '../../rdx/todoList/actions';
+import { selectEditItemId, selectIsAddElementModalVisible } from '../../rdx/app/selector';
+import { selectTodoData } from '../../rdx/todoList/selector';
 
 import './TodoElementFormModal.css';
 
-export const TodoElementFormModal = ({ element, onAddElement, onEditElement, onCloseClick }) => {
+export const TodoElementFormModal = () => {
+  const editItemId = useSelector(selectEditItemId);
+  const todoData = useSelector(selectTodoData);
+
+  const isAddElementModalVisible = useSelector(selectIsAddElementModalVisible)
+
+  const element = useMemo(() => {
+    if (!editItemId) {
+      return null;
+    }
+    return todoData.find(e => e.id === editItemId)
+  }, [todoData, editItemId]);
+  
   const [description, setDescription] = useState(element ? element.description : '');
   const [when, setWhen] = useState(element ? element.when : '');
   const [priority, setPriority] = useState(element ? element.priority : '');
+
+  const dispatch = useDispatch();
+
+  const onCloseClick = useCallback(
+    () => {
+      dispatch(hideFormModal())
+    },
+    [dispatch],
+  )
 
   const onDescriptionChange = useCallback((event) => {
     setDescription(event.target.value);
@@ -31,56 +59,37 @@ export const TodoElementFormModal = ({ element, onAddElement, onEditElement, onC
 
   const onButtonClick = useCallback(() => {
     if (element) {
-      onEditElement({
+      dispatch(editTodoItem({
         ...element,
         description,
         when,
         priority,
-      });
-      return;
-    } 
-    onAddElement({
-      description,
-      when,
-      priority,
-    })
-  }, [onAddElement, description, when, priority, onEditElement, element]);
+      }))
+    } else {
+      dispatch(addTodoItem({
+        description,
+        when,
+        priority,
+      }));
+    }
+    dispatch(hideFormModal());
+  }, [element, dispatch, description, when, priority]);
 
   return (
-    <div className="form">
-      <div className="input">
-        <label htmlFor="desc">Description</label>
-        <input id="desc" onChange={onDescriptionChange} value={description} maxLength={100} />
-      </div>
-      <div className="input">
-        <label htmlFor="when">When</label>
-        <input id="when" onChange={onWhenChange} value={when} maxLength={100}/>
-      </div>
-      <div className="input">
-        <label htmlFor="priority">Priority</label>
-        <input id="priority" onChange={onPriorityChange} value={priority} maxLength={1} />
-      </div>
-      <div className="buttonContainer">
-        <button onClick={onButtonClick}>Save</button>
-        <button onClick={onCloseClick}>Close</button>
-      </div>
-    </div>
+    <Dialog open={isAddElementModalVisible} onClose={onCloseClick}>
+      <DialogTitle>Add Item</DialogTitle>
+      <DialogContent>
+        <DialogContentText>
+          Please enter data to add an item
+        </DialogContentText>
+        <TextField id="standard-basic" margin="dense" fullWidth label="Description" variant="standard" onChange={onDescriptionChange} value={description} />
+        <TextField id="standard-basic" margin="dense" fullWidth label="When" variant="standard" onChange={onWhenChange} value={when} />
+        <TextField id="standard-basic" margin="dense" fullWidth label="Priority" variant="standard" onChange={onPriorityChange} value={priority} />
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={onButtonClick} size="small">Save</Button>
+        <Button onClick={onCloseClick} size="small">Close</Button>
+      </DialogActions>
+    </Dialog>
   )
-}
-
-TodoElementFormModal.defaultProps = {
-  onAddElement: () => {},
-  onCloseClick: () => {},
-}
-
-TodoElementFormModal.propTypes = {
-  onAddElement: PropTypes.func,
-  onEditElement: PropTypes.func,
-  onCloseClick: PropTypes.func,
-  element: PropTypes.shape({
-    description: PropTypes.string,
-    when: PropTypes.string,
-    priority: PropTypes.number,
-    done: PropTypes.bool,
-  }),
 }
