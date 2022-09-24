@@ -1,6 +1,6 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import PropTypes from 'prop-types';
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 import { selectTodoData } from '../../rdx/todoList/selector';
 import { removeTodoItem } from '../../rdx/todoList/actions';
@@ -13,7 +13,13 @@ import './TodoElementList.css'
 export const TodoElementList = () => {
   
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const sortType = searchParams.get('sort');
+  console.log('sortType: ', sortType);
+  
   const onAddClicked = useCallback(
     () => {
       dispatch(showFormModal())
@@ -30,16 +36,32 @@ export const TodoElementList = () => {
 
   const onEditElement = useCallback(
     (id) => {
-      dispatch(showFormModal(id))
+      navigate('edit/' + id)
     },
-    [dispatch],
+    [navigate],
   )
   
   const data = useSelector(selectTodoData);
 
+  const dataToDisplay = useMemo(() => {
+  
+    if(!sortType) {
+      return data;
+    }
+
+    return [...data].sort((a, b) => {
+      if(a[sortType] > b[sortType]) {
+        return 1;
+      } else if(a[sortType] < b[sortType]) {
+        return -1;
+      }
+      return 0;
+    })
+  }, [data, sortType])
+
   return (
     <div className='elementList'>
-      {data.map(element => <TodoElement element={element} key={element.id} onRemoveElement={onRemoveElement} onEditElement={onEditElement} />)}
+      {dataToDisplay.map(element => <TodoElement element={element} key={element.id} onRemoveElement={onRemoveElement} onEditElement={onEditElement} />)}
       <TodoAddElement onAddClick={onAddClicked} />
     </div>
   )

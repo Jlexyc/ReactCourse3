@@ -1,15 +1,23 @@
 import React from 'react';
+import { Routes, Route } from "react-router-dom";
 
-import { TodoElementList } from './components/TodoElementsList/TodoElementList';
+import { WelcomePage } from './components/WelcomePage/WelcomePage';
+import { TodoElementsDetails } from './components/TodoElementsDetails/TodoElementsDetails';
+import { DashboardPage } from './components/DashboardPage/DashboardPage';
 import { TodoElementFormModal } from './components/TodoElementFormModal/TodoElementFormModal';
 
 import './App.css';
 
 const App = () => {
-
   return (
     <div>
-      <TodoElementList />
+      <Routes>
+        <Route path='*' element={<WelcomePage />} />
+        <Route path='/app' element={<DashboardPage />} >
+          <Route path='edit' element={<TodoElementsDetails />} />
+          <Route path='edit/:itemId' element={<TodoElementsDetails />} />
+        </Route>
+      </Routes>
       <TodoElementFormModal />
     </div>
   );

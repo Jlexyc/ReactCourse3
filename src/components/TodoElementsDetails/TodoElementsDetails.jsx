@@ -1,27 +1,33 @@
 import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate, useParams } from "react-router-dom";
 
-import { DialogTitle, DialogContentText, DialogContent, DialogActions, Dialog, TextField, Button } from '@mui/material';
+import { Box, TextField, Button, Typography } from '@mui/material';
 
 import { hideFormModal } from '../../rdx/app/actions';
 import { addTodoItem, editTodoItem } from '../../rdx/todoList/actions';
-import { selectEditItemId, selectIsAddElementModalVisible } from '../../rdx/app/selector';
 import { selectTodoData } from '../../rdx/todoList/selector';
 
-import './TodoElementFormModal.css';
-
-export const TodoElementFormModal = () => {
-  const editItemId = useSelector(selectEditItemId);
+const styles = {
+  box: {
+    display: 'flex',
+    flexDirection: 'column',
+    minWidth: '300px',
+    maxWidth: '300px',
+  }
+}
+export const TodoElementsDetails = () => {
+  const { itemId } = useParams()
+  console.log('itemId: ', itemId);
   const todoData = useSelector(selectTodoData);
-
-  const isAddElementModalVisible = useSelector(selectIsAddElementModalVisible)
+  const navigate = useNavigate();
 
   const element = useMemo(() => {
-    if (!editItemId) {
+    if (!itemId) {
       return null;
     }
-    return todoData.find(e => e.id === editItemId)
-  }, [todoData, editItemId]);
+    return todoData.find(e => e.id === itemId)
+  }, [todoData, itemId]);
   
   const [description, setDescription] = useState(element ? element.description : '');
   const [when, setWhen] = useState(element ? element.when : '');
@@ -41,12 +47,9 @@ export const TodoElementFormModal = () => {
 
   const dispatch = useDispatch();
 
-  const onCloseClick = useCallback(
-    () => {
-      dispatch(hideFormModal())
-    },
-    [dispatch],
-  )
+  const onCloseClick = useCallback(() => {
+    navigate('/app')
+  }, []);
 
   const onDescriptionChange = useCallback((event) => {
     setDescription(event.target.value);
@@ -88,20 +91,14 @@ export const TodoElementFormModal = () => {
   }, [element, dispatch, description, when, priority]);
 
   return (
-    <Dialog open={isAddElementModalVisible} onClose={onCloseClick}>
-      <DialogTitle>Add Item</DialogTitle>
-      <DialogContent>
-        <DialogContentText>
-          Please enter data to add an item
-        </DialogContentText>
-        <TextField id="standard-basic" margin="dense" fullWidth label="Description" variant="standard" onChange={onDescriptionChange} value={description}/>
-        <TextField id="standard-basic" margin="dense" fullWidth label="When" variant="standard" onChange={onWhenChange} value={when} />
-        <TextField id="standard-basic" margin="dense" fullWidth label="Priority" variant="standard" onChange={onPriorityChange} value={priority} />
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={onButtonClick} size="small">Save</Button>
-        <Button onClick={onCloseClick} size="small">Close</Button>
-      </DialogActions>
-    </Dialog>
+    <Box sx={styles.box}>
+      <TextField id="standard-basic" margin="dense" fullWidth label="Description" variant="standard" onChange={onDescriptionChange} value={description}/>
+      <TextField id="standard-basic" margin="dense" fullWidth label="When" variant="standard" onChange={onWhenChange} value={when} />
+      <TextField id="standard-basic" margin="dense" fullWidth label="Priority" variant="standard" onChange={onPriorityChange} value={priority} />
+      {element ? <Typography variant="caption" component="div">{element.longDescription}</Typography> : null}
+      <Button onClick={onButtonClick} size="small">Save</Button>
+      <Button onClick={onCloseClick} size="small">Close</Button>
+
+    </Box>
   )
 }
