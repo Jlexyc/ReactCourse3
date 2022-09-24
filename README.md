@@ -1,7 +1,7 @@
 # ReactCourse3
 React Lessons
 
-# Homework #1
+# Homework #1 (Functional Components)
 
 UI is on you.
 
@@ -16,3 +16,21 @@ Each task must have:
 4. status
 5. creation date
 6. update date
+
+# Homework #2 (Redux)
+
+- Rebuild your Homework 1 with Redux
+
+# Homework #3 (Thunk + Fetch)
+
+Create a React App that will be fetching and updating data remotely on the BE.
+
+You need to implement:
+- List of goods
+- Filter goods by the string (locally)
+- Sort goods by the field asc/desc (locally)
+- Update item
+- Remove Item
+- Add Item
+
+Use BE app from https://github.com/Jlexyc/bff-react to run service locally
