@@ -2,9 +2,8 @@ import React from 'react';
 import { Routes, Route } from "react-router-dom";
 
 import { WelcomePage } from './components/WelcomePage/WelcomePage';
-import { TodoElementsDetails } from './components/TodoElementsDetails/TodoElementsDetails';
 import { DashboardPage } from './components/DashboardPage/DashboardPage';
-import { TodoElementFormModal } from './components/TodoElementFormModal/TodoElementFormModal';
+import { NewItemForm } from './components/NewItemForm/NewItemForm';
 
 import './App.css';
 
@@ -14,11 +13,9 @@ const App = () => {
       <Routes>
         <Route path='*' element={<WelcomePage />} />
         <Route path='/app' element={<DashboardPage />} >
-          <Route path='edit' element={<TodoElementsDetails />} />
-          <Route path='edit/:itemId' element={<TodoElementsDetails />} />
+          <Route path='edit' element={<NewItemForm />} />
         </Route>
       </Routes>
-      <TodoElementFormModal />
     </div>
   );
 }

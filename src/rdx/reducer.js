@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
-import { reducer as todoListReducer } from './todoList/reducer';
 import { reducer as appReducer } from './app/reducer';
+import { reducer as goodsReducer } from './goods/reducer';
 
 export const rootReducer = combineReducers({ 
-  todo: todoListReducer, 
-  app: appReducer 
+  app: appReducer,
+  goods: goodsReducer,
 });

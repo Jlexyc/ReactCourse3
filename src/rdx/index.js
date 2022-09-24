@@ -1,18 +1,12 @@
 import { createStore, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk'
 import { rootReducer } from './reducer';
 
-const middleware1 = store => next => action => {
-    console.log('Middleware 1', action)
+const logger = store => next => action => {
+    console.log('Action: ', action)
     const returnValue = next(action)
+    console.log('new state: ', store.getState());
     return returnValue
   }
 
-const middleware2 = ({ getState }) => {
-  return next => action => {
-    console.log('Middleware 2', action)
-    const returnValue = next(action)
-    return returnValue
-  }
-}
-
-export const store = createStore(rootReducer, applyMiddleware(middleware1, middleware2));
+export const store = createStore(rootReducer, applyMiddleware(logger, thunk));

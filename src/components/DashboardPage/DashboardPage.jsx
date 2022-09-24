@@ -1,6 +1,7 @@
 import { Outlet, useSearchParams } from 'react-router-dom';
-import { useCallback } from 'react';
-import { TodoElementList } from "../TodoElementsList/TodoElementList";
+import { useCallback, useEffect } from 'react';
+import { GoodsList } from '../GoodsList/GoodsList';
+import { requestGoods } from '../../services/goodsService';
 
 import { Button } from '@mui/material';
 
@@ -26,11 +27,11 @@ export const DashboardPage = () => {
   return (
     <div className='dashboard'>
       <div>
-          <Button sx={styles.button} onClick={onDescriptionFilterClick} size="small" variant='contained'>Filter by description</Button>
-          <Button sx={styles.button} onClick={onPriorityFilterClick} size="small" variant='contained'>Filter by priority</Button>
+          {/* <Button sx={styles.button} onClick={onDescriptionFilterClick} size="small" variant='contained'>Filter by description</Button>
+          <Button sx={styles.button} onClick={onPriorityFilterClick} size="small" variant='contained'>Filter by priority</Button> */}
       </div>
+      <GoodsList />
       <div className='dashboardContent'>
-        <TodoElementList />
         <Outlet />
       </div>
     </div>
