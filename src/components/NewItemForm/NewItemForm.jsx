@@ -87,7 +87,6 @@ export const NewItemForm = () => {
       {element ? <Typography variant="caption" component="div">{element.longDescription}</Typography> : null}
       {isLoading ? <CircularProgress color="success" /> : <Button onClick={onButtonClick} size="small">Save</Button>}
       <Button onClick={onCloseClick} size="small">Close</Button>
-
     </Box>
   )
 }
