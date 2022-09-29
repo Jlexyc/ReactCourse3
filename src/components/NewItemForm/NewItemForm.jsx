@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo, useEffect } from 'react';
+import React, { useState, useCallback, useMemo, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -16,6 +16,8 @@ const styles = {
 }
 export const NewItemForm = () => {
   const { itemId } = useParams()
+  const firstFieldRef = useRef(null);
+
   // const todoData = useSelector(selectTodoData);
   const isLoading = useSelector(selectIsDataAdding);
   const todoData = [];
@@ -31,6 +33,11 @@ export const NewItemForm = () => {
   const [title, setTitle] = useState(element ? element.title : '');
   const [description, setDescription] = useState(element ? element.description : '');
   const [weight, setWeight] = useState(element ? element.weight : '');
+
+  useEffect(() => {
+    console.log('firstFieldRef: ', firstFieldRef.current);
+    firstFieldRef?.current.focus();
+  }, []);
 
   useEffect(() => {
     if (element) {
@@ -81,7 +88,7 @@ export const NewItemForm = () => {
 
   return (
     <Box sx={styles.box}>
-      <TextField id="standard-basic" margin="dense" fullWidth label="Description" variant="standard" onChange={onDescriptionChange} value={description}/>
+      <TextField inputRef={firstFieldRef} id="standard-basic" margin="dense" fullWidth label="Description" variant="standard" onChange={onDescriptionChange} value={description}/>
       <TextField id="standard-basic" margin="dense" fullWidth label="Title" variant="standard" onChange={onTitleChange} value={title} />
       <TextField id="standard-basic" margin="dense" fullWidth label="Weight" variant="standard" onChange={onWeightChange} value={weight} />
       {element ? <Typography variant="caption" component="div">{element.longDescription}</Typography> : null}

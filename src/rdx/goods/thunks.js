@@ -1,4 +1,4 @@
-import { requestGoods, createItem } from '../../services/goodsService'
+import { requestGoods, createItem, deleteItem, editItem } from '../../services/goodsService'
 import { 
   getGoodsListRequest, 
   getGoodsListSuccess, 
@@ -6,6 +6,12 @@ import {
   createItemRequest,
   createItemFailed,
   createItemSuccess,
+  removeItemRequest,
+  removeItemFailed,
+  removeItemSuccess,
+  editItemRequest,
+  editItemFailed,
+  editItemSuccess,
 } from './actions';
 
 export const fetchGoodsThunk = () => {
@@ -28,6 +34,30 @@ export const createItemThunk = (item) => {
       dispatch(createItemSuccess(response.response));
     } else {
       dispatch(createItemFailed(response.error));
+    }
+  }
+}
+
+export const deleteItemThunk = (itemId) => {
+  return async (dispatch, getState) => {
+    dispatch(removeItemRequest(itemId));
+    const response = await deleteItem(itemId);
+    if (response.success) {
+      dispatch(removeItemSuccess(itemId));
+    } else {
+      dispatch(removeItemFailed(response.error, itemId));
+    }
+  }
+}
+
+export const editItemThunk = (item) => {
+  return async (dispatch, getState) => {
+    dispatch(editItemRequest(item));
+    const response = await editItem(item);
+    if (response.success) {
+      dispatch(editItemSuccess(item));
+    } else {
+      dispatch(editItemFailed(response.error, item));
     }
   }
 }

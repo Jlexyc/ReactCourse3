@@ -5,12 +5,20 @@ import {
   CREATE_ITEM_FAILED,
   CREATE_ITEM_SUCCESS,
   CREATE_ITEM_REQUEST,
+  REMOVE_ITEM_FAILED,
+  REMOVE_ITEM_SUCCESS,
+  REMOVE_ITEM_REQUEST,
+  EDIT_ITEM_FAILED,
+  EDIT_ITEM_SUCCESS,
+  EDIT_ITEM_REQUEST,
 } from './actions';
 
 const initialState = {
   data: [],
   isDataLoading: false,
   isDataAdding: false,
+  isItemRemoving: {},
+  isItemUpdating: {},
 }
 
 export const reducer = (state = initialState, action) => {
@@ -52,6 +60,71 @@ export const reducer = (state = initialState, action) => {
         data: action.list,
         isDataLoading: false,
       }
+      case REMOVE_ITEM_FAILED:
+        return {
+          ...state,
+          error: action.error,
+          isItemRemoving: {
+            ...state.isItemRemoving,
+            [action.itemId]: false,
+          },
+        }
+      case REMOVE_ITEM_REQUEST:
+        return {
+          ...state,
+          error: null,
+          isItemRemoving: {
+            ...state.isItemRemoving,
+            [action.itemId]: true,
+          },
+        }
+      case REMOVE_ITEM_SUCCESS:
+        return {
+          ...state,
+          data: state.data.filter(i => i.id !== action.itemId),
+          isItemRemoving: {
+            ...state.isItemRemoving,
+            [action.itemId]: false,
+          },
+        }
+      case EDIT_ITEM_FAILED:
+        return {
+          ...state,
+          error: action.error,
+          data: state.data.map(i => {
+            if (i.id === action.item.id) {
+              return {...i};
+            }
+            return i;
+          }),
+          isItemUpdating: {
+            ...state.isItemUpdating,
+            [action.item.id]: false,
+          },
+        }
+      case EDIT_ITEM_REQUEST:
+        return {
+          ...state,
+          error: null,
+          isItemUpdating: {
+            ...state.isItemUpdating,
+            [action.item.id]: true,
+          },
+        }
+      case EDIT_ITEM_SUCCESS:
+        return {
+          ...state,
+          data: state.data.map(i => {
+            if (i.id === action.item.id) {
+              return action.item;
+            }
+            return i;
+          }),
+          isItemUpdating: {
+            ...state.isItemUpdating,
+            [action.item.id]: false,
+          },
+        }
     default:
       return state;
   }

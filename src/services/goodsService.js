@@ -23,6 +23,14 @@ export const createItem = (item) => {
   return performRequest({ path: 'goods', method: 'POST', body: item })
 }
 
+export const deleteItem = (itemId) => {
+  return performRequest({ path: 'goods/' + itemId, method: 'DELETE'})
+}
+
+export const editItem = (item) => {
+  return performRequest({ path: 'goods/' + item.id, method: 'PUT', body: item})
+}
+
 export const performRequest = async ({ path, method = 'GET', body }) => {
   try {
     const bodyString = body ? JSON.stringify(body) : undefined;

@@ -1,7 +1,7 @@
 import { Outlet, useSearchParams } from 'react-router-dom';
 import { useCallback, useEffect } from 'react';
 import { GoodsList } from '../GoodsList/GoodsList';
-import { requestGoods } from '../../services/goodsService';
+import { useNavigate } from "react-router-dom";
 
 import { Button } from '@mui/material';
 
@@ -14,26 +14,20 @@ const styles = {
 }
 export const DashboardPage = () => {
 
-  const [searchParams, setSearchParams] = useSearchParams();
-
-  const onDescriptionFilterClick = useCallback(() => {
-    setSearchParams({ sort: 'description'})
-  }, [setSearchParams]);
-
-  const onPriorityFilterClick = useCallback(() => {
-    setSearchParams({ sort: 'priority'})
-  }, [setSearchParams]);
+  const navigate = useNavigate();
+  const onAddItemClicked = useCallback(() => {
+    navigate('edit')
+  }, [navigate])
 
   return (
     <div className='dashboard'>
-      <div>
-          {/* <Button sx={styles.button} onClick={onDescriptionFilterClick} size="small" variant='contained'>Filter by description</Button>
-          <Button sx={styles.button} onClick={onPriorityFilterClick} size="small" variant='contained'>Filter by priority</Button> */}
+      <div className='headerPanel'>
+          <Button sx={styles.button} onClick={onAddItemClicked} size="small" variant='contained'>Add Item</Button>
       </div>
-      <GoodsList />
       <div className='dashboardContent'>
         <Outlet />
       </div>
+      <GoodsList />
     </div>
   )
 }

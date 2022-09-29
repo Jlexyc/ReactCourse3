@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Grid, CircularProgress, Typography } from '@mui/material';
+import { CircularProgress, Typography } from '@mui/material';
 import { GoodsItemCard } from './GoodsItemCard';
 import { fetchGoodsThunk } from '../../rdx/goods/thunks';
 import { selectAllGoods, selectIsDataLoading, selectGoodsError } from '../../rdx/goods/selectors';
@@ -15,15 +15,15 @@ export const GoodsList = () => {
     dispatch(fetchGoodsThunk());
   }, [dispatch]);
 
-  if (goodsError) {
-    return <Typography variant="H1" >{goodsError}</Typography>
-  }
+  // if (goodsError) {
+  //   return <Typography variant="H1" >{goodsError}</Typography>
+  // }
   if (isDataLoading) {
     return <CircularProgress color="success" />
   }
   return (
-    <Grid container spacing={2}>
-      {goods.map((item) => <GoodsItemCard item={item} key={item.id} />)}
-    </Grid>
+    <>
+      {goods.map((item, index) => <GoodsItemCard item={item} key={item.id} index={index} />)}
+    </>
   )
 }
