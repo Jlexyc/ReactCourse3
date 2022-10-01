@@ -5,11 +5,11 @@ export const showFormModal = (id) => {
   return {
     type: SHOW_FORM_MODAL,
     editItemId: id,
-  }
-}
+  };
+};
 
 export const hideFormModal = () => {
   return {
     type: HIDE_FORM_MODAL,
-  }
-}
+  };
+};

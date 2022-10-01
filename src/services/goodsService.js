@@ -13,23 +13,23 @@ const baseGoodsUrl = 'http://127.0.0.1:8080';
 
 const commonHeaders = { 
   "Content-Type": "application/json"
-}
+};
 
 export const requestGoods = () => {
-  return performRequest({ path: 'goods', method: 'GET' })
-}
+  return performRequest({ path: 'goods', method: 'GET' });
+};
 
 export const createItem = (item) => {
-  return performRequest({ path: 'goods', method: 'POST', body: item })
-}
+  return performRequest({ path: 'goods', method: 'POST', body: item });
+};
 
 export const deleteItem = (itemId) => {
-  return performRequest({ path: 'goods/' + itemId, method: 'DELETE'})
-}
+  return performRequest({ path: 'goods/' + itemId, method: 'DELETE'});
+};
 
 export const editItem = (item) => {
-  return performRequest({ path: 'goods/' + item.id, method: 'PUT', body: item})
-}
+  return performRequest({ path: 'goods/' + item.id, method: 'PUT', body: item});
+};
 
 export const performRequest = async ({ path, method = 'GET', body }) => {
   try {
@@ -46,11 +46,11 @@ export const performRequest = async ({ path, method = 'GET', body }) => {
       const responseJson = await response.json();
       console.log('Response: ', responseJson);
       return { success: true, response: responseJson };
-    } else {
-      return {success: false, error: 'Something Went Wrong'};  
-    }
+    } 
+    return {success: false, error: 'Something Went Wrong'};  
+    
   } catch(error) {
     console.log('Something went wrong: ', error);
     return {success: false, error: 'Something Went Wrong'};
   }
-}
+};

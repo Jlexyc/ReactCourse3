@@ -14,16 +14,18 @@ export const EDIT_ITEM_REQUEST = 'EDIT_ITEM_REQUEST';
 export const EDIT_ITEM_SUCCESS = 'EDIT_ITEM_SUCCESS';
 export const EDIT_ITEM_FAILED = 'EDIT_ITEM_FAILED';
 
+export const SET_FILTER = 'SET_FILTER';
+
 export const removeItemFailed = (error, itemId) => ({
   type: REMOVE_ITEM_FAILED,
   error: error,
   itemId,
-})
+});
 
 export const removeItemRequest = (itemId) => ({
   type: REMOVE_ITEM_REQUEST,
   itemId,
-})
+});
 
 export const removeItemSuccess = (itemId) => ({
   type: REMOVE_ITEM_SUCCESS,
@@ -33,11 +35,11 @@ export const removeItemSuccess = (itemId) => ({
 export const createItemFailed = (error,) => ({
   type: CREATE_ITEM_FAILED,
   error: error,
-})
+});
 
 export const createItemRequest = () => ({
   type: CREATE_ITEM_REQUEST
-})
+});
 
 export const createItemSuccess = (item) => ({
   type: CREATE_ITEM_SUCCESS,
@@ -47,11 +49,11 @@ export const createItemSuccess = (item) => ({
 export const getGoodsListFailed = error => ({
   type: GET_GOODS_LIST_FAILED,
   error: error,
-})
+});
 
 export const getGoodsListRequest = () => ({
   type: GET_GOODS_LIST_REQUEST
-})
+});
 
 export const getGoodsListSuccess = (list) => ({
   type: GET_GOODS_LIST_SUCCESS,
@@ -62,14 +64,19 @@ export const editItemFailed = (error, item) => ({
   type: EDIT_ITEM_FAILED,
   error: error,
   item,
-})
+});
 
 export const editItemRequest = (item) => ({
   type: EDIT_ITEM_REQUEST,
   item
-})
+});
 
 export const editItemSuccess = (item) => ({
   type: EDIT_ITEM_SUCCESS,
   item,
+});
+
+export const setFilterAction = (filter) => ({
+  type: SET_FILTER,
+  filter,
 });

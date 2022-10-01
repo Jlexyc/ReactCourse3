@@ -1,4 +1,4 @@
-import { requestGoods, createItem, deleteItem, editItem } from '../../services/goodsService'
+import { requestGoods, createItem, deleteItem, editItem } from '../../services/goodsService';
 import { 
   getGoodsListRequest, 
   getGoodsListSuccess, 
@@ -15,7 +15,7 @@ import {
 } from './actions';
 
 export const fetchGoodsThunk = () => {
-  return async (dispatch, getState) => {
+  return async (dispatch) => {
     dispatch(getGoodsListRequest());
     const response = await requestGoods();
     if (response.success) {
@@ -23,11 +23,11 @@ export const fetchGoodsThunk = () => {
     } else {
       dispatch(getGoodsListFailed(response.error));
     }
-  }
-}
+  };
+};
 
 export const createItemThunk = (item) => {
-  return async (dispatch, getState) => {
+  return async (dispatch) => {
     dispatch(createItemRequest());
     const response = await createItem(item);
     if (response.success) {
@@ -35,11 +35,11 @@ export const createItemThunk = (item) => {
     } else {
       dispatch(createItemFailed(response.error));
     }
-  }
-}
+  };
+};
 
 export const deleteItemThunk = (itemId) => {
-  return async (dispatch, getState) => {
+  return async (dispatch) => {
     dispatch(removeItemRequest(itemId));
     const response = await deleteItem(itemId);
     if (response.success) {
@@ -47,11 +47,11 @@ export const deleteItemThunk = (itemId) => {
     } else {
       dispatch(removeItemFailed(response.error, itemId));
     }
-  }
-}
+  };
+};
 
 export const editItemThunk = (item) => {
-  return async (dispatch, getState) => {
+  return async (dispatch) => {
     dispatch(editItemRequest(item));
     const response = await editItem(item);
     if (response.success) {
@@ -59,5 +59,5 @@ export const editItemThunk = (item) => {
     } else {
       dispatch(editItemFailed(response.error, item));
     }
-  }
-}
+  };
+};

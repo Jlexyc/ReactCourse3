@@ -13,9 +13,9 @@ const styles = {
     minWidth: '300px',
     maxWidth: '300px',
   }
-}
+};
 export const NewItemForm = () => {
-  const { itemId } = useParams()
+  const { itemId } = useParams();
   const firstFieldRef = useRef(null);
 
   // const todoData = useSelector(selectTodoData);
@@ -27,7 +27,7 @@ export const NewItemForm = () => {
     if (!itemId) {
       return null;
     }
-    return todoData.find(e => e.id === itemId)
+    return todoData.find(e => e.id === itemId);
   }, [todoData, itemId]);
   
   const [title, setTitle] = useState(element ? element.title : '');
@@ -54,16 +54,16 @@ export const NewItemForm = () => {
   const dispatch = useDispatch();
 
   const onCloseClick = useCallback(() => {
-    navigate('/app')
+    navigate('/app');
   }, []);
 
   const onDescriptionChange = useCallback((event) => {
     setDescription(event.target.value);
-  }, [])
+  }, []);
 
   const onTitleChange = useCallback((event) => {
     setTitle(event.target.value);
-  }, [])
+  }, []);
 
   const onWeightChange = useCallback((event) => {
     if (event.target.value.length === 0) {
@@ -76,14 +76,14 @@ export const NewItemForm = () => {
     }
 
     setWeight(event.target.value);
-  }, [])
+  }, []);
 
   const onButtonClick = useCallback(() => {
     dispatch(createItemThunk({
       description,
       title,
       weight,
-    }))
+    }));
   }, [description, dispatch, title, weight]);
 
   return (
@@ -95,5 +95,5 @@ export const NewItemForm = () => {
       {isLoading ? <CircularProgress color="success" /> : <Button onClick={onButtonClick} size="small">Save</Button>}
       <Button onClick={onCloseClick} size="small">Close</Button>
     </Box>
-  )
-}
+  );
+};
