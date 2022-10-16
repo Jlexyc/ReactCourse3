@@ -10,10 +10,10 @@ import { store } from './rdx/';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.Fragment>
-    <BrowserRouter>
-      <Provider store={store}>
-        <App textProp="Hello world! From Props" />
-      </Provider>
-    </BrowserRouter>
+    <Provider store={store}>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </Provider>
   </React.Fragment>
 );
