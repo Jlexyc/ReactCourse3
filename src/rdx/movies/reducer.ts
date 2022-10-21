@@ -1,6 +1,6 @@
-import { AnyAction } from 'redux';
-import { isActionOf } from 'typesafe-actions';
+import { getType } from 'typesafe-actions';
 
+import { AppActions } from '../actions';
 import { findMovieAsyncAction } from './actions';
 import { MovieModel } from '../../services/models';
 
@@ -14,28 +14,28 @@ const initialState: MoviesState = {
   isListLoading: false,
 }
 
-export const reducer = (state: MoviesState = initialState, action: AnyAction) => {
+export const reducer = (state: MoviesState = initialState, action: AppActions) => {
+  console.log('action: ', action);
   switch(action.type) {
-    case isActionOf(findMovieAsyncAction.request):
-      return {
-        ...state,
-        isListLoading: true,
-      }
+  case getType(findMovieAsyncAction.request):
+    return {
+      ...state,
+      isListLoading: true,
+    };
 
-    case isActionOf(findMovieAsyncAction.success):
-      return {
-        ...state,
-        isListLoading: false,
-      }
+  case getType(findMovieAsyncAction.success):
+    return {
+      ...state,
+      list: action.payload.results,
+      isListLoading: false,
+    };
 
-    case isActionOf(findMovieAsyncAction.failure):
-      return {
-        ...state,
-        isListLoading: false,
-      }
-
+  case getType(findMovieAsyncAction.failure):
+    return {
+      ...state,
+      isListLoading: false,
+    };
+  default:
+    return state;
   }
-  return {
-    ...state,
-  }
-}
+};
