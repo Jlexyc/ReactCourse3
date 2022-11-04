@@ -1,7 +1,7 @@
 const baseGoodsUrl = 'https://imdb8.p.rapidapi.com';
 const APIKey = '2c2aa355d4msh8dd98a418cda1b0p1a857ajsnadb14156dc08';
 
-import { FindResponse } from './models';
+import { FindResponse, GetCastResponse } from './models';
 
 export interface APIResponse<T extends object> {
   success: boolean;
@@ -26,7 +26,14 @@ export const findMovies = async (queryString: string): Promise<APIResponse<FindR
     path: 'title/find?q=' + queryString,
   });
   return response;
-}
+};
+
+export const getCast = async (movieId: string): Promise<APIResponse<GetCastResponse>> => {
+  const response = await performRequest <GetCastResponse>({
+    path: 'title/get-full-credits?tconst=' + movieId,
+  });
+  return response;
+};
 
 export const performRequest = async <T extends object>({ path, method = 'GET', body }: APIRequest): Promise<APIResponse<T>> => {
   try {

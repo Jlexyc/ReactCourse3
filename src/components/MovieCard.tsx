@@ -1,18 +1,30 @@
-import React from 'react';
+import React, { useCallback, useContext } from 'react';
 import { Card, CardContent, Typography, CardActions, Button, CardMedia, Box } from '@mui/material';
-
+import { ThemeContext } from '../App';
 import { MovieModel } from '../services/models';
+import { getLocalisedString } from '../services/localisationService';
 
 export interface MovieCardPropsType {
   movie: MovieModel;
+  onPress: (movieId: string) => void;
 }
 
-export const MovieCard = ({ movie }: MovieCardPropsType) => {
+export const MovieCard = ({ movie, onPress }: MovieCardPropsType) => {
+
+  const theme = useContext(ThemeContext);
+
+  const onMoviePressed = useCallback(() => {
+    const movieIdComponents = movie.id.split('/');
+    if (movieIdComponents && movieIdComponents.length) {
+      onPress(movieIdComponents[movieIdComponents.length - 2]);
+    }
+  }, [movie.id]);
+
   return (
     <Card sx={{ 
       minWidth: 275, 
       backgroundColor: 
-      '#F0F0F0', 
+      theme === 'dark' ? '#A0A0A0' : '#FAFAFA',
       margin: '20px', 
       display: 'flex', 
       flexDirection: 'row', 
@@ -30,7 +42,7 @@ export const MovieCard = ({ movie }: MovieCardPropsType) => {
           </Typography>
         </CardContent>
         <CardActions>
-          <Button size="small">Learn More</Button>
+          <Button size="small" onClick={onMoviePressed}>{getLocalisedString('movieCardActionTitle')}</Button>
         </CardActions>
       </Box>
       <CardMedia
